@@ -31,19 +31,26 @@ module Display_8Bit(
     parameter OFF = 5'b10000;
     
     parameter ZERO = 1'b0;
+    parameter ONE = 1'b1;
+    parameter TWO = 2'b10;
+    parameter THREE = 2'b11;
+    parameter FOUR = 3'b100;
+    parameter FIVE = 3'b101;
+    parameter SIX = 3'b110;
+    parameter SEVEN = 3'b111;
+    parameter EIGHT = 4'b1000;
     parameter NINE = 4'b1001;
+    parameter TEN = 4'b1010;
     parameter NINETEEN = 4'b10011;
     parameter TWENTY_NINE = 5'b11101;
     parameter THIRTY_NINE = 6'b100111;
     parameter FOURTY_NINE = 6'b110001;
     parameter FIFTY_NINE = 6'b111011;
-    parameter  SIXTY_NINE = 6'b1000101;
+    parameter SIXTY_NINE = 6'b1000101;
     parameter SEVENTY_NINE = 6'b1001111;
     parameter EIGHTY_NINE = 6'b1011001;
     parameter NINETY_NINE = 7'b110_0011;
     parameter HUNDRED_NINETY_NINE = 8'b1100_0111;
-    parameter ONE = 1'b1;
-    parameter TWO = 2'b10;
     
     reg [5:0] num2;
     reg [5:0] num1;
@@ -60,15 +67,10 @@ module Display_8Bit(
         end
         
         //handling tens place
-        if (num < NINE) begin
+        if (num < TEN) begin
             num1 = OFF;
         end else begin
-            /*num1 = num - num2;
-            if (num1 > NINETY_NINE) begin
-                num1 = ZERO;
-            end else if (num1 > EIGHTY_NINE) begin
-                num1 = NINE;
-            */
+            num1 = (num / 10) % 10;
         end
         
         //handling ones place
@@ -77,18 +79,10 @@ module Display_8Bit(
         end else begin
             num0 = num % 10;        
         end
-        
-        
-        
-    
-    
-    
     end
     
-    
-    
     Display(OFF, num2, num1, num0, clk, seg, an);
-    
+
 endmodule 
 
 module Display(
