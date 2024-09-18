@@ -94,8 +94,36 @@ module Display(
     output reg [6:0] seg,
     output [3:0] an
     );
-    //parameter TURN_OFF_SEGMENT = 5'b10000;
-    //parameter DASH_SEGMENT = 5'b10001;
+    wire [6:0] seg0;
+    segment U0 (num0, seg0);
+    wire [6:0] seg1;
+    segment U1 (num1, seg1);
+    wire [6:0] seg2;
+    segment U2 (num2, seg2);
+    wire [6:0] seg3;
+    segment U3 (num3, seg3);
+    
+    wire seg_clk;
+    segment_clock U4 (clk, seg_clk);
+    handle_an_gate U5 (seg_clk, an);
+    always @ (posedge seg_clk)
+    begin  
+        if(an == 4'b0111) begin //num0
+            seg <= seg0;
+        end else if(an == 4'b1110) begin //num1
+            seg <= seg1;
+        end else if(an == 4'b1101) begin //num2
+            seg <= seg2;
+        end else if(an == 4'b1011) begin //num3
+            seg <= seg3;
+        end 
+    end 
+endmodule
+
+module segment(
+    input [5:0] num,
+    output reg [6:0] seg
+    );
     
     parameter ZERO = 7'b0000001;
     parameter ONE = 7'b1001111;
@@ -116,97 +144,29 @@ module Display(
     parameter OFF = 7'b1111111;
     parameter DASH = 7'b1111110;
     
-    wire seg_clk;
-    segment_clock U0 (clk, seg_clk);
-    handle_an_gate U1 (seg_clk, an);
-    always @ (posedge seg_clk)
-    begin  
-        if(an == 4'b0111) begin //num0
-            case (num0)
-                0:  seg=ZERO;
-                1:  seg=ONE;
-                2:  seg=TWO;
-                3:  seg=THREE;
-                4:  seg=FOUR;
-                5:  seg=FIVE;
-                6:  seg=SIX;
-                7:  seg=SEVEN;
-                8:  seg=EIGHT;
-                9:  seg=NINE;
-                10: seg=TEN;
-                11: seg=ELEVEN;
-                12: seg=TWELVE;
-                13: seg=THIRTEEN;
-                14: seg=FOURTEEN;
-                15: seg=FIFTEEN;
-                16: seg=OFF;
-                17: seg=DASH;
-            endcase
-        end else if(an == 4'b1110) begin //num1
-                case (num1)
-                0:  seg=ZERO;
-                1:  seg=ONE;
-                2:  seg=TWO;
-                3:  seg=THREE;
-                4:  seg=FOUR;
-                5:  seg=FIVE;
-                6:  seg=SIX;
-                7:  seg=SEVEN;
-                8:  seg=EIGHT;
-                9:  seg=NINE;
-                10: seg=TEN;
-                11: seg=ELEVEN;
-                12: seg=TWELVE;
-                13: seg=THIRTEEN;
-                14: seg=FOURTEEN;
-                15: seg=FIFTEEN;
-                16: seg=OFF;
-                17: seg=DASH;
-            endcase
-        end else if(an == 4'b1101) begin //num2
-                case (num2)
-                0:  seg=ZERO;
-                1:  seg=ONE;
-                2:  seg=TWO;
-                3:  seg=THREE;
-                4:  seg=FOUR;
-                5:  seg=FIVE;
-                6:  seg=SIX;
-                7:  seg=SEVEN;
-                8:  seg=EIGHT;
-                9:  seg=NINE;
-                10: seg=TEN;
-                11: seg=ELEVEN;
-                12: seg=TWELVE;
-                13: seg=THIRTEEN;
-                14: seg=FOURTEEN;
-                15: seg=FIFTEEN;
-                16: seg=OFF;
-                17: seg=DASH;
-            endcase
-        end else if(an == 4'b1011) begin //num3
-                case (num3)
-                0:  seg=ZERO;
-                1:  seg=ONE;
-                2:  seg=TWO;
-                3:  seg=THREE;
-                4:  seg=FOUR;
-                5:  seg=FIVE;
-                6:  seg=SIX;
-                7:  seg=SEVEN;
-                8:  seg=EIGHT;
-                9:  seg=NINE;
-                10: seg=TEN;
-                11: seg=ELEVEN;
-                12: seg=TWELVE;
-                13: seg=THIRTEEN;
-                14: seg=FOURTEEN;
-                15: seg=FIFTEEN;
-                16: seg=OFF;
-                17: seg=DASH;
-            endcase
-        end 
-    end 
+    always @ (num) begin
+        case (num)
+            0:  seg=ZERO;
+            1:  seg=ONE;
+            2:  seg=TWO;
+            3:  seg=THREE;
+            4:  seg=FOUR;
+            5:  seg=FIVE;
+            6:  seg=SIX;
+            7:  seg=SEVEN;
+            8:  seg=EIGHT;
+            9:  seg=NINE;
+            10: seg=TEN;
+            11: seg=ELEVEN;
+            12: seg=TWELVE;
+            13: seg=THIRTEEN;
+            14: seg=FOURTEEN;
+            15: seg=FIFTEEN;
+            16: seg=OFF;
+            17: seg=DASH;
+        endcase
+    end
+    
 endmodule
 
 module handle_an_gate(
