@@ -91,8 +91,8 @@ module Display(
     input [5:0] num1,
     input [5:0] num0,
     input clk,
-    output reg [6:0] seg,
-    output [3:0] an
+    output wire [6:0] seg,
+    output wire [3:0] an
     );
     wire [6:0] seg0;
     segment U0 (num0, seg0);
@@ -106,7 +106,8 @@ module Display(
     wire seg_clk;
     segment_clock U4 (clk, seg_clk);
     handle_an_gate U5 (seg_clk, an);
-    always @ (posedge seg_clk)
+    segment_mux U6 (an, seg0, seg1, seg2, seg3, seg);
+    /*always @ (posedge seg_clk)
     begin  
         if(an == 4'b0111) begin //num0
             seg <= seg0;
@@ -117,7 +118,35 @@ module Display(
         end else if(an == 4'b1011) begin //num3
             seg <= seg3;
         end 
-    end 
+    end */
+endmodule
+
+module segment_mux(
+    input [3:0] an,
+    input [6:0] seg0,
+    input [6:0] seg1,
+    input [6:0] seg2,
+    input [6:0] seg3,
+    output reg [6:0] seg_out
+    );
+    
+    parameter DISP_ZERO =  4'b1110;
+    parameter DISP_ONE =   4'b1101;
+    parameter DISP_TWO =   4'b1011;
+    parameter DISP_THREE = 4'b0111;
+    
+    always @ (*) begin
+        if(an == DISP_ZERO) begin //num0
+            seg_out = seg0;
+        end else if(an == DISP_ONE) begin //num1
+            seg_out = seg1;
+        end else if(an == DISP_TWO) begin //num2
+            seg_out = seg2;
+        end else if(an == DISP_THREE) begin //num3
+            seg_out = seg3;
+        end 
+    end
+    
 endmodule
 
 module segment(
