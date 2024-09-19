@@ -30,25 +30,9 @@ module Display_8Bit(
     
     parameter OFF = 5'b10000;
     
-    parameter ZERO = 1'b0;
     parameter ONE = 1'b1;
     parameter TWO = 2'b10;
-    parameter THREE = 2'b11;
-    parameter FOUR = 3'b100;
-    parameter FIVE = 3'b101;
-    parameter SIX = 3'b110;
-    parameter SEVEN = 3'b111;
-    parameter EIGHT = 4'b1000;
-    parameter NINE = 4'b1001;
     parameter TEN = 4'b1010;
-    parameter NINETEEN = 4'b10011;
-    parameter TWENTY_NINE = 5'b11101;
-    parameter THIRTY_NINE = 6'b100111;
-    parameter FOURTY_NINE = 6'b110001;
-    parameter FIFTY_NINE = 6'b111011;
-    parameter SIXTY_NINE = 6'b1000101;
-    parameter SEVENTY_NINE = 6'b1001111;
-    parameter EIGHTY_NINE = 6'b1011001;
     parameter NINETY_NINE = 7'b110_0011;
     parameter HUNDRED_NINETY_NINE = 8'b1100_0111;
     
@@ -107,18 +91,6 @@ module Display(
     segment_clock U4 (clk, seg_clk);
     handle_an_gate U5 (seg_clk, an);
     segment_mux U6 (an, seg0, seg1, seg2, seg3, seg);
-    /*always @ (posedge seg_clk)
-    begin  
-        if(an == 4'b0111) begin //num0
-            seg <= seg0;
-        end else if(an == 4'b1110) begin //num1
-            seg <= seg1;
-        end else if(an == 4'b1101) begin //num2
-            seg <= seg2;
-        end else if(an == 4'b1011) begin //num3
-            seg <= seg3;
-        end 
-    end */
 endmodule
 
 module segment_mux(
